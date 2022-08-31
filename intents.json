@@ -35,7 +35,7 @@
     "context": [""]
     },
     {"tag": "news",
-    "patterns": ["what is going on", "news", "update"],
+    "patterns": ["what is going on", "news", "update", "whats happening"],
     "responses": ["Anything else I can do for you?", "Happy to help!"],
     "context": [""]
     }
