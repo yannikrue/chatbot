@@ -22,11 +22,11 @@ def get_weather():
     text = text[start:]
 
     if hour < 20:
-        end = text.find("{}".format(days[day + 1]))
+        end = text.find("{}\n".format(days[day + 1]))
     else:
-        start = text.find("{}".format(days[day + 1]))
+        start = text.find("{}\n".format(days[day + 1]))
         text = text[start:]
-        end = text.find("{}".format(days[day + 2]))
+        end = text.find("{}\n".format(days[day + 2]))
 
 
     report = text[:end]
