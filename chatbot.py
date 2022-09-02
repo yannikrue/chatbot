@@ -1,6 +1,9 @@
 
+from glob import glob
+from operator import ne
 import pickle
 from time import time
+from xmlrpc.client import FastMarshaller
 import numpy as np
 import json
 import random
@@ -22,6 +25,9 @@ intents_json = json.loads(open('intents.json').read())
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
 
+stocks = False
+news = False
+weather = False
 
 def clean_up_sentence(sentence):
     sen_words = nltk.word_tokenize(sentence)
@@ -60,41 +66,45 @@ def predict(sentence, model):
     return return_list
 
 def getResponse(ints, ints_json):
+    global stocks, weather, news
     tag = ints[0]['intent']
     list_of_intents = ints_json['intents']
     for i in list_of_intents:
         if(i['tag']== tag):
+            info = ""
             res = random.choice(i['responses'])
             break
     if tag == "stocks":
-        i = input("Do you want me to open Parqet, the portfolio visualizer? y/n \n")
-        if (i == "y"):
-            time.sleep(3)
-            webbrowser.open('https://app.parqet.com/p/6231ddc2ca76350dff004bf0')
+        stocks = True
     elif tag == "weather":
-        weather = webscraping.get_weather()
-        print(weather)
-        i = input("Should I open the weather app for more detailed weather forecast? y/n \n")
-        if i == "y":
-            webbrowser.open("https://www.srf.ch/meteo")
+        weather = True
+        info = webscraping.get_weather() + "\n\n"
     elif tag == "news":
-        news = webscraping.get_news()
-        print(news)
-        i = input("Should I open the news app for more detailed information? y/n \n")
-        if i == "y":
-            webbrowser.open("https://www.srf.ch/")
-    return res
+        news = True
+        info = webscraping.get_news() + "\n\n"
+    return info + res
 
 def chatbot_response(msg):
-    ints = predict(msg, model)
-    res = getResponse(ints, intents_json)
-    return res
-
-
-print("Jarvis, here to help\n")
-while True:
-    msg_input = input()
-    if (msg_input == "quit"):
-        break
-    res = chatbot_response(msg_input)
-    print(res)
+    global stocks, weather, news
+    res = "Anything else I can do for you?"
+    print(msg)
+    if msg == "y\n":
+        if stocks:
+            webbrowser.open('https://app.parqet.com/p/6231ddc2ca76350dff004bf0')
+        elif weather:
+            webbrowser.open("https://www.srf.ch/meteo")
+        elif news:
+            webbrowser.open("https://www.srf.ch/")
+        stocks = False
+        weather = False
+        news = False
+        return res
+    elif msg == "n\n":
+        stocks = False
+        weather = False
+        news = False
+        return res
+    else:
+        ints = predict(msg, model)
+        res = getResponse(ints, intents_json)
+        return res

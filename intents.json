@@ -26,17 +26,17 @@
     },
     {"tag": "stocks",
     "patterns": ["How is the stock market", "How much is my stock portfolio worth", "stocks", "etf"],
-    "responses": ["Anything else I can do for you?"],
+    "responses": ["Do you want me to open Parqet, the portfolio visualizer? y/n \n"],
     "context": [""]
     },
     {"tag": "weather",
     "patterns": ["How is the weather", "How warm is it", "How cold is it", "Will it rain", "Is the sun shining", "is it cloudy", "weather", "temperature", "hot", "cold", "rain", "sun"],
-    "responses": ["Anything else I can do for you?"],
+    "responses": ["Should I open the weather app for more detailed weather forecast? y/n \n"],
     "context": [""]
     },
     {"tag": "news",
     "patterns": ["what is going on", "news", "update", "whats happening"],
-    "responses": ["Anything else I can do for you?", "Happy to help!"],
+    "responses": ["Should I open the news app for more detailed information? y/n \n"],
     "context": [""]
     }
 ]
